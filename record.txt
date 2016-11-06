@@ -1,0 +1,34 @@
+1st round,
+password = webarebears
+
+real    3m12.604s
+user    1m17.272s
+sys     0m0.212s
+=========================
+2nd round,
+password = webarebears
+
+real    1m19.181s
+user    1m16.020s
+sys     0m0.000s
+=========================
+3rd round,
+password = webarebears
+
+real    1m23.738s
+user    1m21.584s
+sys     0m0.000s
+=========================
+4th round, 
+password = webarebears
+real    1m28.309s
+user    1m26.292s
+sys     0m0.012s
+=========================
+5th round,
+password = webarebears
+
+real    1m28.309s
+user    1m26.292s
+sys     0m0.012s
+=========================
