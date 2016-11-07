@@ -1,5 +1,4 @@
 #define _XOPEN_SOURCE 
-#include <crypt.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,26 +18,57 @@
 #endif
 /* End macros */
 
-
 int main()
 {
-    const char target[150] = "$6$naIJPKfO$SMkeSkFM36M6u3mZIyf2hAtt31WxuYtoTwLMjF9Fv49cprYPKtR1K88Ox5xvQdLdoBrAOmCnomRvaHc7VDiqQ0";
-    const char salt[20] = "$6$naIJPKfO";
     char str[100][30];
+    char target[150];
+    char salt[20];
     char password[100];
-    FILE *fp;
+    FILE *fp1, *fp2;
     int n = 0;
     int i = 0, j = 0, k = 0;
 
-    if( !(fp = fopen("john.txt", "rb")) ) {
+    if( !(fp1 = fopen("john.txt", "rb")) ) {
         fprintf(stderr, "Cannot open the john.txt file.\n");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     /* Load all the data, john.txt, in memory. */
-    while( fscanf(fp, "%s", str[n++]) != EOF );
-
+    while( fscanf(fp1, "%s", str[n++]) != EOF );
+    fclose(fp1);
+                                                         
+    /* n is the number of strings from john.txt file. */
     n = n - 1;
+
+    if( !(fp2 = fopen("sample_testcase.txt", "rb")) ) {
+        fprintf(stderr, "Cannot open the sample_testcase.txt file.\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    /* try to strtok and concatenate the salt string and the target string. */
+    char tmp[150];
+    char *tok1, *tok2, *tok3;
+    if( fscanf(fp2, "%s", tmp) == EOF ) {
+        fprintf(stderr, "Cannot read the sample_testcase.txt file.\n");
+        exit(EXIT_FAILURE);
+    }
+    fclose(fp2);
+
+    tok1 = strtok(tmp, "$");
+    tok1 = strtok(NULL, "$");
+    tok2 = strtok(NULL, "$");
+    tok3 = strtok(NULL, ":");
+
+    strcpy(salt, "$");
+    strcat(salt, tok1);
+    strcat(salt, "$");
+    strcat(salt, tok2);
+    
+    strcpy(target, salt);
+    strcat(target, "$");
+    strcat(target, tok3);
+    /* End of strtok */
+
 
     /* Try to concatenate 3 strings, then crypt it to compare the target string. */
     for( i = 0 ; i < n ; i++) {
@@ -49,15 +79,15 @@ int main()
                 strcat(password, str[k]);
 
                 if( !strcmp( target, crypt(password, salt) ) ) {
-                    printSTR(password);
+                    printf("password = %s\n", password);
                     exit(EXIT_SUCCESS); 
                 }
 
+                /* Flush the password buffer. */
                 memset(password, 0, sizeof(password));
             }
         }
     }
                 
-    fclose(fp);
     return 0;
 }
