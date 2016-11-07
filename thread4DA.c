@@ -25,15 +25,13 @@ char salt[20];
 char password[100];
 int n = 0;
 
-void Test( const char *tmp )
+void dicAttack( const char *tmp )
 {
     for( int j = 0 ; j < n ; j++ ) {
         for( int  k = 0 ; k < n ; k++) {
             strcat(password, tmp);
             strcat(password, str[j]);
             strcat(password, str[k]);
-
-            printSTR(password);
 
             if( !strcmp( target, crypt(password, salt) ) ) {
                 printf("password = %s\n", password);
@@ -44,6 +42,11 @@ void Test( const char *tmp )
             memset(password, 0, sizeof(password));
         }
     } 
+}
+
+void Test( int n )
+{
+    printf( "<T:%d> - %d\n", omp_get_thread_num(), n );
 }
 
 int main()
@@ -96,7 +99,10 @@ int main()
     /* Try to concatenate 3 strings, then crypt it to compare the target string. */
     #pragma omp parallel for
     for( i = 0 ; i < n ; i++)
-        Test(str[i]);
+        dicAttack(str[i]);
+
+    //#pragma omp parallel
+        //Test(0);
                 
     return 0;
 }
