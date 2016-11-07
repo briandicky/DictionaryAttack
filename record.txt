@@ -32,3 +32,24 @@ real    1m28.309s
 user    1m26.292s
 sys     0m0.012s
 =========================
+6th round,
+password = webarebears
+
+real    1m19.277s
+user    1m15.876s
+sys     0m0.000s
+=========================
+7th round,
+password = webarebears
+
+real    1m19.266s
+user    1m15.300s
+sys     0m0.000s
+=========================
+8th round,
+password = webarebears
+
+real    1m18.451s
+user    1m16.144s
+sys 0m0.004s
+=========================
