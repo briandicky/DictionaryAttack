@@ -1,5 +1,5 @@
 CC = gcc
-override CFLAGS += -c -Wall -O2
+override CFLAGS += -c -Wall -O3
 LDFLAGS =
 LIBS = -lm -lcrypt
 SOURCES = dicAttack.c
