@@ -20,13 +20,13 @@
 /* End macros */
 
 char str[100][30];
-char target[150];
-char salt[20];
-char password[100];
 int n = 0;
 
-void dicAttack( const char *tmp )
+void dicAttack( char *tmp, char *target, char *salt )
 {
+    char password[100];
+
+    
     for( int j = 0 ; j < n ; j++ ) {
         for( int  k = 0 ; k < n ; k++) {
             strcat(password, tmp);
@@ -49,10 +49,17 @@ void Test( int n )
     printf( "<T:%d> - %d\n", omp_get_thread_num(), n );
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    char target[150];
+    char salt[20];
     FILE *fp1, *fp2;
     int i = 0;
+
+    if( argc > 2 ) {
+        fprintf(stderr, "Invalid input file.\n");
+        exit(EXIT_FAILURE); 
+    }
 
     if( !(fp1 = fopen("john.txt", "rb")) ) {
         fprintf(stderr, "Cannot open the john.txt file.\n");
@@ -66,8 +73,8 @@ int main()
     /* n is the number of strings from john.txt file. */
     n = n - 1;
 
-    if( !(fp2 = fopen("sample_testcase.txt", "rb")) ) {
-        fprintf(stderr, "Cannot open the sample_testcase.txt file.\n");
+    if( !(fp2 = fopen(argv[1], "rb")) ) {
+        fprintf(stderr, "Cannot open the file.\n");
         exit(EXIT_FAILURE);
     }
     
@@ -94,15 +101,14 @@ int main()
     strcat(target, "$");
     strcat(target, tok3);
     /* End of strtok */
-
+    
+    //#pragma omp parallel
+        //Test(0);
 
     /* Try to concatenate 3 strings, then crypt it to compare the target string. */
     #pragma omp parallel for
     for( i = 0 ; i < n ; i++)
-        dicAttack(str[i]);
-
-    //#pragma omp parallel
-        //Test(0);
+        dicAttack(str[i], target, salt);
                 
     return 0;
 }

@@ -1,8 +1,8 @@
 CC = gcc
-override CFLAGS += -c -Wall -O3
-LDFLAGS =
+override CFLAGS += -c -Wall -O3 -fopenmp
+LDFLAGS = -fopenmp
 LIBS = -lm -lcrypt
-SOURCES = dicAttack.c
+SOURCES = dicAtk.c
 DELE = .depend
 OBJ = $(SOURCES:.c=.o)
 EXE = decrypt
