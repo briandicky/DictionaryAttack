@@ -5,8 +5,6 @@
 #include <string.h>
 #include <omp.h>
 
-#define __DEBUG__ 666
-
 /* The macros of printing funtions. */
 #ifdef __DEBUG__
 #define printINT(x) printf("%s = %d\n", #x, (x));
@@ -19,6 +17,7 @@
 #endif
 /* End macros */
 
+/* Global variables */
 char str[100][30];
 int n = 0;
 
@@ -26,7 +25,6 @@ void dicAttack( char *tmp, char *target, char *salt )
 {
     char password[100];
 
-    
     for( int j = 0 ; j < n ; j++ ) {
         for( int  k = 0 ; k < n ; k++) {
             strcat(password, tmp);
