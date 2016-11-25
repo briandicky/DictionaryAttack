@@ -1,9 +1,10 @@
-#define _XOPEN_SOURCE 
+#define _GNU_SOURCE 
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <omp.h>
+#include <crypt.h>
 
 /* The macros of printing funtions. */
 #ifdef __DEBUG__
@@ -20,6 +21,7 @@
 /* Global variables */
 char str[100][30];
 int n = 0;
+struct crypt_data data4cry;
 
 void dicAttack( char *tmp, char *target, char *salt )
 {
@@ -31,7 +33,10 @@ void dicAttack( char *tmp, char *target, char *salt )
             strcat(password, str[j]);
             strcat(password, str[k]);
 
-            if( !strcmp( target, crypt(password, salt) ) ) {
+            //crypt_r
+            data4cry.initialized = 0;
+
+            if( !strcmp( target, crypt_r(password, salt, &data4cry) ) ) {
                 printf("password = %s\n", password);
                 exit(EXIT_SUCCESS); 
             }
