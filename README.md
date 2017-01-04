@@ -24,4 +24,4 @@ Then type this,
 
 In the end, it will work successfully.
 
-###2016 Advance UNIX Programmin HW4
+###2016 Advance UNIX Programming HW4
